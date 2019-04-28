@@ -8,7 +8,7 @@ using NetLibrary.SimpleMatchMaking;
 using NetLibrary.SimpleNet;
 using LobbyServer;
 using LobbyServer.Game;
-using MsgProtocol;
+using CommonEnum;
 
 namespace LobbyServer
 {

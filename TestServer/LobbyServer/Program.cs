@@ -83,10 +83,10 @@ namespace LobbyServer
             User user = new User();
             user.Initialize(token); // DB 작업 이후에 User를 초기화
 
-            if (!game_server.Connect(user))
+            if (game_server.RegistWaitUser(user) == false)
             {
-                token.disconnect();
-                LogReport("Channel Enter Failed !");
+                LogReport("Connection Create User Failed!");
+                user.Disconnect();
             }
 
             LogReport("New Connection Create User!");

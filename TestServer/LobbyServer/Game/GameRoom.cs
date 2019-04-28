@@ -4,7 +4,7 @@ using System.Text;
 
 using NetLibrary.SimpleNet;
 using LobbyServer;
-using MsgProtocol;
+using CommonEnum;
 
 namespace LobbyServer.Game
 {

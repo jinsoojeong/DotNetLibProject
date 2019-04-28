@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using NetLibrary.SimpleNet;
 using NetLibrary.SimpleMatchMaking;
 using NetLibrary.SimpleObjectPool;
-using MsgProtocol;
+using CommonEnum;
 
 namespace LobbyServer
 {
@@ -17,10 +17,19 @@ namespace LobbyServer
         MatchMaking match_making;
 
         public Lobby lobby { get; set; } = null;
+        public UserState state { get; set; }
 
         public delegate int Func(int x);
 
-        public User() {}
+        public User()
+        {
+            state = UserState.LoginState;
+        }
+
+        public int GetTokkenID()
+        {
+            return token.id;
+        }
 
         public void Initialize(CUserToken token)
         {
@@ -33,13 +42,18 @@ namespace LobbyServer
             this.token.send(msg);
         }
 
+        public void Disconnect()
+        {
+            token.disconnect();
+        }
+
         // Ipeer 인터페이스
         void IPeer.on_message(Const<byte[]> buffer)
         {
             byte[] clone = new byte[1024];
             Array.Copy(buffer.Value, clone, buffer.Value.Length);
             CPacket msg = new CPacket(clone, this);
-            Program.game_server.enqueue_packet(msg);
+            Program.game_server.PushPacket(msg);
         }
 
         void IPeer.on_removed()
@@ -127,5 +141,7 @@ namespace LobbyServer
             token = null;
             match_making = null;
         }
+
+
     }
 }

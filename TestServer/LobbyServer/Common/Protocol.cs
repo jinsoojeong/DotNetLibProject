@@ -4,19 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MsgProtocol
+namespace CommonEnum
 {
     public enum PROTOCOL : short
     {
         BEGIN = 0,
 
-        CHAT_MSG_REQ = 1,
-        CHAT_MSG_ACK = 2,
-        ENTRY_MATCHING_REQ = 3,
-        ENTRY_MATCHING_ACK = 4,
-        PIECE_MOVE_REQ = 5,
-        PIECE_MOVE_ACK = 6,
-        PIECE_MOVE_NOTIFY = 7,
+        CERTIFY_REQ = 1,
+        CERTIFY_ACK,
+        CHAT_MSG_REQ,
+        CHAT_MSG_ACK,
+        ENTRY_MATCHING_REQ,
+        ENTRY_MATCHING_ACK,
+        PIECE_MOVE_REQ,
+        PIECE_MOVE_ACK,
+        PIECE_MOVE_NOTIFY,
         TURN_OVER_REQ,
         TURN_OVER_ACK,
         TURN_OVER,

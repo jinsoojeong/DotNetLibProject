@@ -12,6 +12,7 @@ namespace NetLibrary.SimpleNet
 
 		public SocketAsyncEventArgs receive_event_args { get; private set; }
 		public SocketAsyncEventArgs send_event_args { get; private set; }
+        public int id { get; }
 
 		// 바이트를 패킷 형식으로 해석해주는 해석기.
 		CMessageResolver message_resolver;
@@ -23,15 +24,22 @@ namespace NetLibrary.SimpleNet
 		Queue<CPacket> sending_queue;
 		// sending_queue lock처리에 사용되는 객체.
 		private object cs_sending_queue;
+        private object cs_token_id;
+        private static int token_id = 0;
 
-		public CUserToken()
+        public CUserToken()
 		{
 			this.cs_sending_queue = new object();
-
+            this.cs_token_id = new object();
 			this.message_resolver = new CMessageResolver();
 			this.peer = null;
 			this.sending_queue = new Queue<CPacket>();
-		}
+
+            lock (cs_token_id)
+            {
+                id = ++token_id;
+            }
+        }
 
 		public void set_peer(IPeer peer)
 		{

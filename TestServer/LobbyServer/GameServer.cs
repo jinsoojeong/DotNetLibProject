@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Text;
 
 using System.Threading;
@@ -9,8 +10,8 @@ namespace LobbyServer
 {
     class GameServer
     {
-        object operation_lock;
-        Queue<CPacket> user_operations;
+        ConcurrentQueue<CPacket> user_operations;
+        ConcurrentDictionary<int, User> login_wait_users;
 
         // 로직 스레드
         Thread main_thread;
@@ -22,8 +23,8 @@ namespace LobbyServer
 
         public GameServer()
         {
-            this.operation_lock = new object();
-            this.user_operations = new Queue<CPacket>();
+            this.user_operations = new ConcurrentQueue<CPacket>();
+            this.login_wait_users = new ConcurrentDictionary<int, User>();
             this.lobby = new Lobby();
         }
 
@@ -48,18 +49,22 @@ namespace LobbyServer
             while (!shutdown)
             {
                 CPacket packet = null;
-                lock (this.operation_lock)
+                while (user_operations.TryDequeue(out packet))
                 {
-                    if (this.user_operations.Count > 0)
-                    {
-                        packet = this.user_operations.Dequeue();
-                    }
+                    if (packet == null)
+                        break;
+
+                    MsgHandle(packet);
                 }
 
-                if (packet != null)
+                User user = null;
+                while (login_wait_users.TryGetValue(out user))
                 {
-                    // 패킷 처리.
-                    process_receive(packet);
+                    if (user == null)
+                        break;
+
+                    if (lobby.Add(user) == false)
+                        user.Disconnect();
                 }
 
                 // Content Update
@@ -68,15 +73,12 @@ namespace LobbyServer
                 System.Threading.Thread.Sleep(1);
             }
         }
-        public void enqueue_packet(CPacket packet)
+        public void PushPacket(CPacket packet)
         {
-            lock (this.operation_lock)
-            {
-                this.user_operations.Enqueue(packet);
-            }
+            this.user_operations.Enqueue(packet);
         }
 
-        void process_receive(CPacket msg)
+        void MsgHandle(CPacket msg)
         {
             //todo:
             // user msg filter 체크.
@@ -86,12 +88,17 @@ namespace LobbyServer
 
         public void Disconnect(User user)
         {
+            if (login_wait_users.ContainsKey(user.GetTokkenID()))
+            {
+                login_wait_users.Remove(user.GetTokkenID(), out user);
+            }
+
             lobby.Remove(user);
         }
 
-        public bool Connect(User user)
+        public bool RegistWaitUser(User user)
         {
-            if (lobby.Add(user) == false)
+            if (login_wait_users.TryAdd(user.GetTokkenID(), user) == false)
                 return false;
 
             return true;
