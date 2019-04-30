@@ -5,6 +5,7 @@ using System.Text;
 
 using System.Threading;
 using NetLibrary.SimpleNet;
+using CommonEnum;
 
 namespace LobbyServer
 {
@@ -57,15 +58,15 @@ namespace LobbyServer
                     MsgHandle(packet);
                 }
 
-                User user = null;
-                while (login_wait_users.TryGetValue(out user))
-                {
-                    if (user == null)
-                        break;
+                //User user = null;
+                //while (login_wait_users.TryGetValue(out user))
+                //{
+                //    if (user == null)
+                //        break;
 
-                    if (lobby.Add(user) == false)
-                        user.Disconnect();
-                }
+                //    if (lobby.Add(user) == false)
+                //        user.Disconnect();
+                //}
 
                 // Content Update
                 lobby.Update();
@@ -83,7 +84,33 @@ namespace LobbyServer
             //todo:
             // user msg filter 체크.
 
-            msg.owner.process_user_operation(msg);
+            switch ((PROTOCOL)msg.protocol_id)
+            {
+                case PROTOCOL.CERTIFY_REQ:
+                    {
+                        User user = (User)msg.owner;
+                        if (login_wait_users.ContainsKey(user.GetTokkenID()))
+                        {
+                            User login_user;
+                            login_wait_users.Remove(user.GetTokkenID(), out login_user);
+                            lobby.Add(user);
+
+                            CPacket packet = CPacket.create((short)PROTOCOL.CERTIFY_ACK);
+                            packet.push((byte)Error.ErrorNone);
+                            user.send(packet);
+                        }
+                        else
+                        {
+                            CPacket packet = CPacket.create((short)PROTOCOL.CERTIFY_ACK);
+                            packet.push((byte)Error.ErrorCertifyFailed);
+                            user.send(packet);
+                        }
+                    }
+                    break;
+                default:
+                    msg.owner.process_user_operation(msg);
+                    break;
+            }
         }
 
         public void Disconnect(User user)
