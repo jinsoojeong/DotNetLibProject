@@ -8,6 +8,7 @@ using NetLibrary.SimpleNet;
 using NetLibrary.SimpleMatchMaking;
 using NetLibrary.SimpleObjectPool;
 using LobbyServer.Game;
+using CommonEnum;
 
 namespace LobbyServer
 {
@@ -26,6 +27,7 @@ namespace LobbyServer
         {
             connect_users.Add(user);
             user.lobby = this;
+            user.state = UserState.LobbyState;
 
             return true;
         }
