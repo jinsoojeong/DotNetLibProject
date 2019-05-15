@@ -1,0 +1,10 @@
+D:\Projects\TestServer\TestServer\TestHttpNet\bin\Debug\TestHttpNet.exe.config
+D:\Projects\TestServer\TestServer\TestHttpNet\bin\Debug\TestHttpNet.exe
+D:\Projects\TestServer\TestServer\TestHttpNet\bin\Debug\TestHttpNet.pdb
+D:\Projects\TestServer\TestServer\TestHttpNet\bin\Debug\NetLibrary.dll
+D:\Projects\TestServer\TestServer\TestHttpNet\bin\Debug\NetLibrary.pdb
+D:\Projects\TestServer\TestServer\TestHttpNet\obj\Debug\TestHttpNet.csprojAssemblyReference.cache
+D:\Projects\TestServer\TestServer\TestHttpNet\obj\Debug\TestHttpNet.csproj.CoreCompileInputs.cache
+D:\Projects\TestServer\TestServer\TestHttpNet\obj\Debug\TestHttpNet.csproj.CopyComplete
+D:\Projects\TestServer\TestServer\TestHttpNet\obj\Debug\TestHttpNet.exe
+D:\Projects\TestServer\TestServer\TestHttpNet\obj\Debug\TestHttpNet.pdb

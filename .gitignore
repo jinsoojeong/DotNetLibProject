@@ -21,3 +21,4 @@ TestServer/TestClient/obj/Debug/TestClient.csproj.FileListAbsolute.txt
 TestServer/TestClient/obj/Debug/TestClient.g.resources
 TestServer/TestClient/obj/Debug/TestClient.Properties.Resources.resources
 TestServer/TestClient/obj/Debug/TestClient_MarkupCompile.lref
+*.cs

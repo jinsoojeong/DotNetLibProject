@@ -4,24 +4,27 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E64EEE9D-8D53-4192-8F40-68EBE0F53049}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetLibrary</RootNamespace>
-    <AssemblyName>NetLibrary</AssemblyName>
+    <ProjectGuid>{AB6AF2F0-F346-461C-8030-A5A417F75DA8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TestHttpNet</RootNamespace>
+    <AssemblyName>TestHttpNet</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\TestServerBin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,30 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SimpleHttpNet\SimpleHttpNet.cs" />
-    <Compile Include="SimpleObjectPool\ObjectPool.cs" />
-    <Compile Include="SimpleMatchMaking\MatchMaking.cs" />
-    <Compile Include="SimpleMatchMaking\SimlpeMatchMaking.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleSqlClient\SimpleSqlClient.cs" />
-    <Compile Include="SimpleSqlClient\SimpleSqlParameter.cs" />
-    <Compile Include="SimpleSqlClient\SimpleSqlRecord.cs" />
-    <Compile Include="SimpleNet\BufferManager.cs" />
-    <Compile Include="SimpleNet\CConnector.cs" />
-    <Compile Include="SimpleNet\CListener.cs" />
-    <Compile Include="SimpleNet\CMessageResolver.cs" />
-    <Compile Include="SimpleNet\CNetworkService.cs" />
-    <Compile Include="SimpleNet\Const.cs" />
-    <Compile Include="SimpleNet\CPacket.cs" />
-    <Compile Include="SimpleNet\CPacketBufferManager.cs" />
-    <Compile Include="SimpleNet\CUserToken.cs" />
-    <Compile Include="SimpleNet\IPeer.cs" />
-    <Compile Include="SimpleNet\Message.cs" />
-    <Compile Include="SimpleNet\SocketAsyncEventArgsPool.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SimpleFileLoader\" />
-    <Folder Include="SimpleLog\" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetLibrary\NetLibrary.csproj">
+      <Project>{e64eee9d-8d53-4192-8f40-68ebe0f53049}</Project>
+      <Name>NetLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLibrary", "NetLibrary\NetLibrary.csproj", "{E64EEE9D-8D53-4192-8F40-68EBE0F53049}"
 EndProject
@@ -13,7 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMatchingLibrary", "Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestObjectPool", "TestObjectPool\TestObjectPool.csproj", "{4A6EA051-D98D-46A7-81F2-0AF1C36D3092}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LobbyServer", "LobbyServer\LobbyServer.csproj", "{4C32A165-FE1C-4C7E-AD1A-B276348BD3E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LobbyServer", "LobbyServer\LobbyServer.csproj", "{4C32A165-FE1C-4C7E-AD1A-B276348BD3E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHttpNet", "TestHttpNet\TestHttpNet.csproj", "{AB6AF2F0-F346-461C-8030-A5A417F75DA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{4C32A165-FE1C-4C7E-AD1A-B276348BD3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C32A165-FE1C-4C7E-AD1A-B276348BD3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C32A165-FE1C-4C7E-AD1A-B276348BD3E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB6AF2F0-F346-461C-8030-A5A417F75DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6AF2F0-F346-461C-8030-A5A417F75DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6AF2F0-F346-461C-8030-A5A417F75DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6AF2F0-F346-461C-8030-A5A417F75DA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
