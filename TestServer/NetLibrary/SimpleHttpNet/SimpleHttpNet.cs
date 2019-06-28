@@ -18,9 +18,11 @@ namespace NetLibrary.SimpleHttpNet
     {
         List<KeyValuePair<string, string>> params_;
         public int time_out { get; set; } = 10000;
+        public string url { get; private set; }
 
-        public HttpQuery()
+        public HttpQuery(string url)
         {
+            this.url = url;
             params_ = new List<KeyValuePair<string, string>>();
         }
         
@@ -44,7 +46,7 @@ namespace NetLibrary.SimpleHttpNet
 
         internal string GenerateGetParam()
         {
-            string data = "? ";
+            string data = "?";
 
             int i = 0;
             foreach (var param in params_)
@@ -85,13 +87,13 @@ namespace NetLibrary.SimpleHttpNet
     {
         public SimpleHttpNet() {}
 
-        public int Request(HttpNetRequestType type, string url, HttpQuery http_query, out string response)
+        public int Request(HttpNetRequestType type, HttpQuery http_query, out string response)
         {
             response = string.Empty;
             HttpWebRequest request = null;
             if (type == HttpNetRequestType.GET)
             {
-                string request_url = url + "/";
+                string request_url = http_query.url + "/";
                 if (http_query.GetCountParam() != 0)
                 {
                     request_url += http_query.GenerateGetParam();
@@ -103,7 +105,7 @@ namespace NetLibrary.SimpleHttpNet
             }
             else if (type == HttpNetRequestType.POST)
             {
-                request = (HttpWebRequest)WebRequest.Create(url);
+                request = (HttpWebRequest)WebRequest.Create(http_query.url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 request.Timeout = http_query.time_out;
