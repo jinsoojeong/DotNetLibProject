@@ -71,4 +71,39 @@ namespace CoinAutoTrader.Source
     {
         public string first_day_of_period;
     }
+
+    public class Trades
+    {
+        public string market;
+        public string trade_date_utc;
+        public string trade_time_utc;
+        public Int64 timestamp;
+        public Int64 trade_price;
+        public double trade_volume;
+        public Int64 prev_closing_price;
+        public Int64 chane_price;
+        public string ask_bid;
+    }
+
+    public class Unit
+    {
+        public Int64 ask_price;
+        public Int64 bid_price;
+        public double ask_size;
+        public double bid_size;
+    }
+
+    public class OrderBook
+    {
+        public OrderBook()
+        {
+            units = new List<Unit>();
+        }
+
+        public string market;
+        public Int64 timestamp;
+        public double total_ask_size;
+        public double total_bid_size;
+        public List<Unit> units;
+    }
 }

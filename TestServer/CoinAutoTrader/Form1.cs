@@ -34,7 +34,13 @@ namespace CoinAutoTrader
         private void button2_Click(object sender, EventArgs e)
         {
             Ticker ticker = SelectTicker("krw-btc");
-            BaseCandle = 
+
+            MinCandle min_candle = SelectCandleMin("krw-btc", 1);
+            DayCandle day_candle = SelectCandleDay("krw-btc");
+            WeekCandle week_candle = SelectCandleWeek("krw-btc");
+            MonthCandle month_candle = SelectCandleMonth("krw-btc");
+
+            Trades trades = SelectTrades();
         }
 
         // 종목조회
@@ -102,48 +108,203 @@ namespace CoinAutoTrader
             return ticker;
         }
 
-        private void SelectCandle(CandleType type, string market, string to = null, Int32? count = null)
+        private MinCandle SelectCandleMin(string market, int unit, string to = null, Int32? count = null)
         {
-            string url = "https://api.upbit.com/v1/candles";
-            switch (type)
-            {
-                case CandleType.Min:
-                    url += "/minutes/1";
-                    break;
-                case CandleType.Day:
-                    url += "/days";
-                    break;
-                case CandleType.Week:
-                    url += "/weeks";
-                    break;
-                case CandleType.Month:
-                    url += "/months";
-                    break;
-            }
+            string url = "https://api.upbit.com/v1/candles/minutes/" + unit.ToString();
 
             HttpQuery http_query_get = new HttpQuery(url);
             http_query_get.time_out = 10000;
-            http_query_get.AddParam("markets", market);
-
-            if (to != null)
-                http_query_get.AddParam("to", to);
-
-            if (count != null)
-                http_query_get.AddParam("count", count.ToString());
+            http_query_get.AddParam("market", market);
+            if (to != null)  http_query_get.AddParam("to", to);
+            if (count != null) http_query_get.AddParam("count", count.ToString());
 
             string response = string.Empty;
             net.Request(HttpNetRequestType.GET, http_query_get, out response);
 
-            BaseCandle candle = null;
-            switch (type)
+            JArray ja = JArray.Parse(response);
+            JToken jt = ja.First();
+
+            MinCandle candle = new MinCandle();
+            candle.market = jt["market"].ToString();
+            candle.candle_date_time_utc = jt["candle_date_time_utc"].ToString();
+            candle.candle_date_time_kst = jt["candle_date_time_kst"].ToString();
+            candle.opening_price = Convert.ToInt64(jt["opening_price"].ToString());
+            candle.high_price = Convert.ToInt64(jt["high_price"].ToString());
+            candle.low_price = Convert.ToInt64(jt["low_price"].ToString());
+            candle.trade_price = Convert.ToInt64(jt["trade_price"].ToString());
+            candle.timestamp = Convert.ToInt64(jt["timestamp"].ToString());
+            candle.candle_acc_trade_price = Convert.ToDouble(jt["candle_acc_trade_price"].ToString());
+            candle.candle_acc_trade_volume = Convert.ToDouble(jt["candle_acc_trade_volume"].ToString());
+
+            candle.unit = Convert.ToInt64(jt["unit"].ToString());
+
+            return candle;
+        }
+
+        private DayCandle SelectCandleDay(string market, string to = null, Int32? count = null)
+        {
+            string url = "https://api.upbit.com/v1/candles/days";
+
+            HttpQuery http_query_get = new HttpQuery(url);
+            http_query_get.time_out = 10000;
+            http_query_get.AddParam("market", market);
+            if (to != null) http_query_get.AddParam("to", to);
+            if (count != null) http_query_get.AddParam("count", count.ToString());
+
+            string response = string.Empty;
+            net.Request(HttpNetRequestType.GET, http_query_get, out response);
+
+            JArray ja = JArray.Parse(response);
+            JToken jt = ja.First();
+
+            DayCandle candle = new DayCandle();
+            candle.market = jt["market"].ToString();
+            candle.candle_date_time_utc = jt["candle_date_time_utc"].ToString();
+            candle.candle_date_time_kst = jt["candle_date_time_kst"].ToString();
+            candle.opening_price = Convert.ToInt64(jt["opening_price"].ToString());
+            candle.high_price = Convert.ToInt64(jt["high_price"].ToString());
+            candle.low_price = Convert.ToInt64(jt["low_price"].ToString());
+            candle.trade_price = Convert.ToInt64(jt["trade_price"].ToString());
+            candle.timestamp = Convert.ToInt64(jt["timestamp"].ToString());
+            candle.candle_acc_trade_price = Convert.ToDouble(jt["candle_acc_trade_price"].ToString());
+            candle.candle_acc_trade_volume = Convert.ToDouble(jt["candle_acc_trade_volume"].ToString());
+
+            candle.prev_closing_price = Convert.ToInt64(jt["prev_closing_price"].ToString());
+            candle.change_price = Convert.ToInt64(jt["change_price"].ToString());
+            candle.change_rate = Convert.ToDouble(jt["change_rate"].ToString());
+
+            return candle;
+        }
+
+        private WeekCandle SelectCandleWeek(string market, string to = null, Int32? count = null)
+        {
+            string url = "https://api.upbit.com/v1/candles/weeks";
+
+            HttpQuery http_query_get = new HttpQuery(url);
+            http_query_get.time_out = 10000;
+            http_query_get.AddParam("market", market);
+            if (to != null) http_query_get.AddParam("to", to);
+            if (count != null) http_query_get.AddParam("count", count.ToString());
+
+            string response = string.Empty;
+            net.Request(HttpNetRequestType.GET, http_query_get, out response);
+
+            JArray ja = JArray.Parse(response);
+            JToken jt = ja.First();
+
+            WeekCandle candle = new WeekCandle();
+            candle.market = jt["market"].ToString();
+            candle.candle_date_time_utc = jt["candle_date_time_utc"].ToString();
+            candle.candle_date_time_kst = jt["candle_date_time_kst"].ToString();
+            candle.opening_price = Convert.ToInt64(jt["opening_price"].ToString());
+            candle.high_price = Convert.ToInt64(jt["high_price"].ToString());
+            candle.low_price = Convert.ToInt64(jt["low_price"].ToString());
+            candle.trade_price = Convert.ToInt64(jt["trade_price"].ToString());
+            candle.timestamp = Convert.ToInt64(jt["timestamp"].ToString());
+            candle.candle_acc_trade_price = Convert.ToDouble(jt["candle_acc_trade_price"].ToString());
+            candle.candle_acc_trade_volume = Convert.ToDouble(jt["candle_acc_trade_volume"].ToString());
+
+            candle.first_day_of_period = jt["first_day_of_period"].ToString();
+
+            return candle;
+        }
+
+        private MonthCandle SelectCandleMonth(string market, string to = null, Int32? count = null)
+        {
+            string url = "https://api.upbit.com/v1/candles/months";
+
+            HttpQuery http_query_get = new HttpQuery(url);
+            http_query_get.time_out = 10000;
+            http_query_get.AddParam("market", market);
+            if (to != null) http_query_get.AddParam("to", to);
+            if (count != null) http_query_get.AddParam("count", count.ToString());
+
+            string response = string.Empty;
+            net.Request(HttpNetRequestType.GET, http_query_get, out response);
+
+            JArray ja = JArray.Parse(response);
+            JToken jt = ja.First();
+
+            MonthCandle candle = new MonthCandle();
+            candle.market = jt["market"].ToString();
+            candle.candle_date_time_utc = jt["candle_date_time_utc"].ToString();
+            candle.candle_date_time_kst = jt["candle_date_time_kst"].ToString();
+            candle.opening_price = Convert.ToInt64(jt["opening_price"].ToString());
+            candle.high_price = Convert.ToInt64(jt["high_price"].ToString());
+            candle.low_price = Convert.ToInt64(jt["low_price"].ToString());
+            candle.trade_price = Convert.ToInt64(jt["trade_price"].ToString());
+            candle.timestamp = Convert.ToInt64(jt["timestamp"].ToString());
+            candle.candle_acc_trade_price = Convert.ToDouble(jt["candle_acc_trade_price"].ToString());
+            candle.candle_acc_trade_volume = Convert.ToDouble(jt["candle_acc_trade_volume"].ToString());
+
+            candle.first_day_of_period = jt["first_day_of_period"].ToString();
+
+            return candle;
+        }
+
+        //Trades
+        private Trades SelectTrades(string market, string to = null, Int32? count = null, string cursor = null)
+        {
+            string url = "https://api.upbit.com/v1/trades/ticks";
+
+            HttpQuery http_query_get = new HttpQuery(url);
+            http_query_get.time_out = 10000;
+            http_query_get.AddParam("market", market);
+            if (to != null) http_query_get.AddParam("to", to);
+            if (count != null) http_query_get.AddParam("count", count.ToString());
+            if (cursor != null) http_query_get.AddParam("cursor", cursor.ToString());
+
+            string response = string.Empty;
+            net.Request(HttpNetRequestType.GET, http_query_get, out response);
+
+            JArray ja = JArray.Parse(response);
+            JToken jt = ja.First();
+
+            Trades trades = new Trades();
+            trades.market = jt["market"].ToString();
+            trades.trade_date_utc = jt["trade_date_utc"].ToString();
+            trades.trade_time_utc = jt["trade_time_utc"].ToString();
+            trades.timestamp = Convert.ToInt64(jt["market"].ToString());
+            trades.trade_price = Convert.ToInt64(jt["trade_price"].ToString());
+            trades.trade_volume = Convert.ToDouble(jt["matrade_volumerket"].ToString());
+            trades.prev_closing_price = Convert.ToInt64(jt["prev_closing_price"].ToString());
+            trades.chane_price = Convert.ToInt64(jt["chane_price"].ToString());
+            trades.ask_bid = jt["ask_bid"].ToString();
+
+            return trades;
+        }
+
+        //Orderbook
+        private OrderBook SelectOrderbook(string market, string to = null, Int32? count = null, string cursor = null)
+        {
+            string url = "https://api.upbit.com/v1/orderbook";
+
+            HttpQuery http_query_get = new HttpQuery(url);
+            http_query_get.time_out = 10000;
+            http_query_get.AddParam("market", market);
+            if (to != null) http_query_get.AddParam("to", to);
+            if (count != null) http_query_get.AddParam("count", count.ToString());
+            if (cursor != null) http_query_get.AddParam("cursor", cursor.ToString());
+
+            string response = string.Empty;
+            net.Request(HttpNetRequestType.GET, http_query_get, out response);
+
+            JArray ja = JArray.Parse(response);
+            JToken jt = ja.First();
+
+            OrderBook order_book = new OrderBook();
+            order_book.market = jt["market"].ToString();
+            order_book.timestamp = Convert.ToInt64(jt["timestamp"].ToString());
+            order_book.total_ask_size = Convert.ToInt64(jt["total_ask_size"].ToString());
+            order_book.total_bid_size = Convert.ToInt64(jt["total_bid_size"].ToString());
+
+            if (jt["orderbook_units"].Count() > 0)
             {
-                case CandleType.Min: candle = new MinCandle(); break;
-                case CandleType.Day: candle = new DayCandle(); break;
-                case CandleType.Week: candle = new WeekCandle(); break;
-                case CandleType.Month: candle = new MonthCandle(); break;
+                Unit unit = new Unit();
+                order_book.units.Add unit;
             }
 
-
+            return order_book;
         }
     }
 }
