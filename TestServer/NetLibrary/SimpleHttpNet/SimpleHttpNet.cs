@@ -16,16 +16,27 @@ namespace NetLibrary.SimpleHttpNet
 
     public class HttpQuery
     {
-        List<KeyValuePair<string, string>> params_;
-        public int time_out { get; set; } = 10000;
+        public List<KeyValuePair<string, string>> addheaders_ = null;
+        public List<KeyValuePair<string, string>> params_ = null;
+        public int time_out { get; set; } = 0;
         public string url { get; private set; }
+        public string content_type { get; set; }
 
         public HttpQuery(string url)
         {
+            content_type = "application/json";
             this.url = url;
             params_ = new List<KeyValuePair<string, string>>();
         }
-        
+
+        public void AddHeader(string key, string value)
+        {
+            if (addheaders_ == null)
+                addheaders_ = new List<KeyValuePair<string, string>>();
+
+            addheaders_.Add(new KeyValuePair<string, string>(key, value));
+        }
+
         public void AddParam(string key, string value)
         {
             params_.Add(new KeyValuePair<string, string>(key, value));
@@ -101,14 +112,31 @@ namespace NetLibrary.SimpleHttpNet
 
                 request = (HttpWebRequest)WebRequest.Create(request_url);
                 request.Method = "GET";
-                request.Headers.Add("Authorization", "BASIC SGVsbG8=");
+                request.ContentType = http_query.content_type;
+                request.Timeout = http_query.time_out;
+
+                if (http_query.addheaders_ != null)
+                {
+                    foreach (KeyValuePair<string, string> itor in http_query.addheaders_)
+                    {
+                        request.Headers.Add(itor.Key, itor.Value);
+                    }
+                }
             }
             else if (type == HttpNetRequestType.POST)
             {
                 request = (HttpWebRequest)WebRequest.Create(http_query.url);
                 request.Method = "POST";
-                request.ContentType = "application/json";
+                request.ContentType = http_query.content_type;
                 request.Timeout = http_query.time_out;
+
+                if (http_query.addheaders_ != null)
+                {
+                    foreach (KeyValuePair<string, string> itor in http_query.addheaders_)
+                    {
+                        request.Headers.Add(itor.Key, itor.Value);
+                    }
+                }
 
                 // POST할 데이타를 Request Stream에 쓴다
                 if (http_query.GetCountParam() != 0)

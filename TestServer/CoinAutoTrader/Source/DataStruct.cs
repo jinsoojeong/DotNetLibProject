@@ -81,7 +81,7 @@ namespace CoinAutoTrader.Source
         public Int64 trade_price;
         public double trade_volume;
         public Int64 prev_closing_price;
-        public Int64 chane_price;
+        public Int64 change_price;
         public string ask_bid;
     }
 
@@ -105,5 +105,83 @@ namespace CoinAutoTrader.Source
         public double total_ask_size;
         public double total_bid_size;
         public List<Unit> units;
+    }
+
+    public class Account
+    {
+        public string currency;
+        public string balance;
+        public string locked;
+        public string avg_buy_price;
+        public bool avg_buy_price_modified;
+        public string unit_currency;
+        public string avg_krw_buy_price;
+        public bool modified;
+    }
+
+    public class Chance
+    {
+        public class Market
+        {
+            public class Bid
+            {
+                public string currency;
+                public string price_unit;
+                public Int64 min_total;
+            }
+
+            public class Ask
+            {
+                public string currency;
+                public string price_unit;
+                public Int64 min_total;
+            }
+
+            public string id;
+            public string name;
+            public List<string> order_types;
+            public List<string> order_sides;
+            public Bid bid;
+            public Ask ask;
+            public string max_total;
+            public string state;
+        }
+
+        public class BidAccount
+        {
+            public string currency;
+            public string balance;
+            public string locked;
+            public string avg_buy_price;
+            public bool avg_buy_price_modified;
+            public string unit_currency;
+            public string avg_krw_buy_price;
+            public bool modified;
+        }
+
+        public class AskAccount
+        {
+            public string currency;
+            public string balance;
+            public string locked;
+            public string avg_buy_price;
+            public bool avg_buy_price_modified;
+            public string unit_currency;
+            public string avg_krw_buy_price;
+            public bool modified;
+        }
+
+        public Chance()
+        {
+            market = new Market();
+            bid_account = new BidAccount();
+            ask_account = new AskAccount();
+        }
+
+        public string bid_fee;
+        public string ask_fee;
+        public Market market;
+        public BidAccount bid_account;
+        public AskAccount ask_account;
     }
 }
