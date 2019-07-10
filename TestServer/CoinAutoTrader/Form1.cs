@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Collections.Concurrent;
 
 using Newtonsoft.Json.Linq;
 using NetLibrary.SimpleHttpNet;
@@ -18,13 +19,19 @@ namespace CoinAutoTrader
 
     public partial class Form1 : Form
     {
+        ConcurrentQueue<string> logs;
         QuotationApi quotation_api;
         ExchangeApi exchange_api;
+
+        int ticker_interval = 1000;
+        bool shutdown = false;
+        Thread ticker_thread = null;
 
         public Form1()
         {
             InitializeComponent();
 
+            logs = new ConcurrentQueue<string>();
             quotation_api = new QuotationApi();
             exchange_api = new ExchangeApi();
 
@@ -32,6 +39,20 @@ namespace CoinAutoTrader
             foreach (string name in markets)
             {
                 DataGrid1.Rows.Add(name, "", "");
+            }
+
+            timer1.Start();
+        }
+
+        private void TickerThread()
+        {
+            while (!shutdown)
+            {
+                Ticker ticker = quotation_api.SelectTicker("krw-btc");
+                string s = "trade_price : " + ticker.trade_price.ToString() +  " opening_price : " + ticker.opening_price.ToString() + " high_price : " + ticker.high_price + " low_price : " + ticker.low_price;
+                logs.Enqueue(s);
+
+                Thread.Sleep(ticker_interval);
             }
         }
                 
@@ -48,6 +69,34 @@ namespace CoinAutoTrader
         private void button1_Click(object sender, EventArgs e)
         {
             exchange_api.SelectAccounts();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            shutdown = false;
+
+            ticker_thread = new Thread(TickerThread);
+            ticker_thread.Start();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            shutdown = true;
+            ticker_thread.Join();
+        }
+
+        private void ReportLog(string log)
+        {
+            textBox1.AppendText(log + Environment.NewLine);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            string log;
+            while (logs.TryDequeue(out log))
+            {
+                ReportLog(log);
+            }
         }
     }
 }

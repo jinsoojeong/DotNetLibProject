@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NetLibrary.SimpleHttpNet;
-using JWT;
 using System.Security.Cryptography;
 
 using System.IdentityModel.Tokens.Jwt;
