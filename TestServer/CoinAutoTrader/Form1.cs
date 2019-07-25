@@ -19,6 +19,10 @@ namespace CoinAutoTrader
 
     public partial class Form1 : Form
     {
+        object ticker_lock;
+
+        Ticker ticker_;
+
         ConcurrentQueue<string> logs;
         QuotationApi quotation_api;
         ExchangeApi exchange_api;
@@ -30,6 +34,8 @@ namespace CoinAutoTrader
         public Form1()
         {
             InitializeComponent();
+
+            ticker_lock = new object();
 
             logs = new ConcurrentQueue<string>();
             quotation_api = new QuotationApi();
@@ -51,6 +57,11 @@ namespace CoinAutoTrader
                 Ticker ticker = quotation_api.SelectTicker("krw-btc");
                 string s = "trade_price : " + ticker.trade_price.ToString() +  " opening_price : " + ticker.opening_price.ToString() + " high_price : " + ticker.high_price + " low_price : " + ticker.low_price;
                 logs.Enqueue(s);
+
+                lock (ticker_lock)
+                {
+                    ticker_ = ticker;
+                }
 
                 Thread.Sleep(ticker_interval);
             }
@@ -74,7 +85,6 @@ namespace CoinAutoTrader
         private void button3_Click(object sender, EventArgs e)
         {
             shutdown = false;
-
             ticker_thread = new Thread(TickerThread);
             ticker_thread.Start();
         }
