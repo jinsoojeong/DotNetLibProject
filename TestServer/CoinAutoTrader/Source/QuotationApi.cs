@@ -278,7 +278,7 @@ namespace CoinAutoTrader.Source
 
             if (jt["orderbook_units"].Count() > 0)
             {
-                Unit unit = new Unit();
+                OrderBook.Unit unit = new OrderBook.Unit();
 
                 unit.ask_price = Convert.ToInt64(jt["ask_price"].ToString());
                 unit.bid_price = Convert.ToInt64(jt["bid_price"].ToString());

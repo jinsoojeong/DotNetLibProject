@@ -21,7 +21,7 @@ namespace CoinAutoTrader
     {
         object ticker_lock;
 
-        Ticker ticker_;
+        Ticker current_ticker_;
 
         ConcurrentQueue<string> logs;
         QuotationApi quotation_api;
@@ -30,6 +30,8 @@ namespace CoinAutoTrader
         int ticker_interval = 1000;
         bool shutdown = false;
         Thread ticker_thread = null;
+
+        string market = "krw-btc";
 
         public Form1()
         {
@@ -41,11 +43,7 @@ namespace CoinAutoTrader
             quotation_api = new QuotationApi();
             exchange_api = new ExchangeApi();
 
-            List<string> markets = quotation_api.SelectMarket();
-            foreach (string name in markets)
-            {
-                DataGrid1.Rows.Add(name, "", "");
-            }
+            //List<string> markets = quotation_api.SelectMarket();
 
             timer1.Start();
         }
@@ -55,18 +53,27 @@ namespace CoinAutoTrader
             while (!shutdown)
             {
                 Ticker ticker = quotation_api.SelectTicker("krw-btc");
-                string s = "trade_price : " + ticker.trade_price.ToString() +  " opening_price : " + ticker.opening_price.ToString() + " high_price : " + ticker.high_price + " low_price : " + ticker.low_price;
-                logs.Enqueue(s);
-
-                lock (ticker_lock)
+                
+                if (ticker.timestamp != current_ticker_.timestamp)
                 {
-                    ticker_ = ticker;
+                    lock (ticker_lock)
+                    {
+                        current_ticker_ = ticker;
+                    }
+
+                    string s = "trade_price : " + current_ticker_.trade_price.ToString() + 
+                        " opening_price : " + current_ticker_.opening_price.ToString() + 
+                        " high_price : " + current_ticker_.high_price + 
+                        " low_price : " + current_ticker_.low_price + 
+                        " time : " + current_ticker_.timestamp;
+
+                    Log(s);
                 }
 
                 Thread.Sleep(ticker_interval);
             }
         }
-                
+
         private void button2_Click(object sender, EventArgs e)
         {
             Ticker ticker = quotation_api.SelectTicker("krw-btc");
@@ -98,6 +105,11 @@ namespace CoinAutoTrader
         private void ReportLog(string log)
         {
             textBox1.AppendText(log + Environment.NewLine);
+        }
+
+        private void Log(string txt)
+        {
+            logs.Enqueue("[" + DateTime.Now + "] " + txt);
         }
 
         private void timer1_Tick(object sender, EventArgs e)

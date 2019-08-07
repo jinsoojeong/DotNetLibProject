@@ -70,8 +70,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Source\DataStruct.cs" />
     <Compile Include="Source\ExchangeApi.cs" />
+    <Compile Include="Source\ExchangeClass.cs" />
     <Compile Include="Source\GlobalEnum.cs" />
     <Compile Include="Source\QuotationApi.cs" />
+    <Compile Include="Source\QuotationClass.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
