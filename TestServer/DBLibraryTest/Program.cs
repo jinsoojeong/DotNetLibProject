@@ -43,21 +43,23 @@ namespace DBLibraryTest
         {
             //DB 실행 예제
             // db 주소, 계정, 비밀번호, db 카테고리
-            CSql.Initialize("192.168.10.19,1433", "sa", "NSDev1234^^", "BS_JJS_GAME");
+            SimpleDB game_db = new SimpleDB("192.168.10.19,1433", "sa", "NSDev1234^^", "CertifyDB");
 
-            QueryParam user_id = new QueryParam(ParamType.INPUT, "@USER_ID", 10086);
-            QueryParam output = new QueryParam(ParamType.OUTPUT, "@OUTPUT", 0);
+            QueryParam user_id = new QueryParam(ParamType.INPUT, "@ServiceName", "KafkaConsumer");
+
+            int output = 0;
+            QueryParam output_param = new QueryParam(ParamType.INPUTOUTPUT, "@ServiceIndex", output);
             
             // 레코드 반환이 없는 프로시저 실행
-            int result = CSql.ExecSP("USP_BS_GET_LIST_QUEST", user_id, output);
+            int result = game_db.ExecSP("CertifyService", user_id, output_param);
             Console.WriteLine("result : {0}", result);
 
-            // 레코드 반환이 있는 프로시저 실행
-            QuestListRecord record = new QuestListRecord();
-            result = CSql.ExecSP("USP_BS_GET_LIST_QUEST", record, user_id, output);
-            Console.WriteLine("result : {0} {1}", result, record.message_);
+            //// 레코드 반환이 있는 프로시저 실행
+            //QuestListRecord record = new QuestListRecord();
+            //result = game_db.ExecSP("USP_BS_GET_LIST_QUEST", record, user_id);
+            //Console.WriteLine("result : {0} {1}", result, record.message_);
 
-            record.View();
+            //record.View();
 
             return;
         }

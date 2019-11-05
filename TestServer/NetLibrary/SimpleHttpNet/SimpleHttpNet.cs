@@ -80,7 +80,7 @@ namespace NetLibrary.SimpleHttpNet
             int i = 0;
             foreach (var itor in params_)
             {
-                data += " \" "+ itor.Key + "\": \" " + itor.Value + "\" ";
+                data += " \""+ itor.Key + "\": \"" + itor.Value + "\" ";
 
                 if (i != params_.Count - 1)
                     data += ", ";
@@ -104,9 +104,10 @@ namespace NetLibrary.SimpleHttpNet
             HttpWebRequest request = null;
             if (type == HttpNetRequestType.GET)
             {
-                string request_url = http_query.url + "/";
+                string request_url = http_query.url;
                 if (http_query.GetCountParam() != 0)
                 {
+                    request_url += "/";
                     request_url += http_query.GenerateGetParam();
                 }
 

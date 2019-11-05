@@ -1,0 +1,13 @@
+D:\Projects\TestServer\TestServer\RestTester\bin\Debug\RestTester.exe.config
+D:\Projects\TestServer\TestServer\RestTester\bin\Debug\RestTester.exe
+D:\Projects\TestServer\TestServer\RestTester\bin\Debug\RestTester.pdb
+D:\Projects\TestServer\TestServer\RestTester\bin\Debug\NetLibrary.dll
+D:\Projects\TestServer\TestServer\RestTester\bin\Debug\NetLibrary.pdb
+D:\Projects\TestServer\TestServer\RestTester\obj\Debug\RestTester.csprojAssemblyReference.cache
+D:\Projects\TestServer\TestServer\RestTester\obj\Debug\RestTester.Form1.resources
+D:\Projects\TestServer\TestServer\RestTester\obj\Debug\RestTester.Properties.Resources.resources
+D:\Projects\TestServer\TestServer\RestTester\obj\Debug\RestTester.csproj.GenerateResource.cache
+D:\Projects\TestServer\TestServer\RestTester\obj\Debug\RestTester.csproj.CoreCompileInputs.cache
+D:\Projects\TestServer\TestServer\RestTester\obj\Debug\RestTester.csproj.CopyComplete
+D:\Projects\TestServer\TestServer\RestTester\obj\Debug\RestTester.exe
+D:\Projects\TestServer\TestServer\RestTester\obj\Debug\RestTester.pdb

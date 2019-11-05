@@ -9,27 +9,32 @@ using System.Data.SqlClient;
 
 namespace NetLibrary.SimpleSqlClient
 {
-    public class CSql
+    public class SimpleDB
     {
-        static private string connection_string = "";
+        private string connection_string = "";
 
-        static private SqlDbType GetSqlDbType(string type_string)
+        private SqlDbType GetSqlDbType(string type_string)
         {
             switch (type_string)
             {
                 case "System.Int64":
                     return SqlDbType.BigInt;
+                case "System.int":
                 case "System.Int32":
                     return SqlDbType.Int;
+                case "System.String":
+                    return SqlDbType.NVarChar;
             }
 
             return 0;
         }
-        static public void Initialize(string server, string uid, string pwd, string db)
+
+        public SimpleDB(string server, string uid, string pwd, string db)
         {
             connection_string = string.Format("server = {0}; uid = {1}; pwd = {2}; database = {3};", server, uid, pwd, db);
         }
-        static public int ExecSP(string sp_name, params QueryParam[] exec_params)
+
+        public int ExecSP(string sp_name, params QueryParam[] exec_params)
         {
             if (connection_string == "")
                 return -1;
@@ -85,16 +90,19 @@ namespace NetLibrary.SimpleSqlClient
 
                     cmd.ExecuteNonQuery();
 
-                    foreach (var output_param in output_params)
+                    if (output_params != null)
                     {
-                        output_param.value_ = cmd.Parameters[output_param.name_].Value;
+                        foreach (var output_param in output_params)
+                        {
+                            output_param.value_ = cmd.Parameters[output_param.name_].Value;
+                        }
                     }
 
                     return Convert.ToInt32(return_value.Value);
                 }
                 catch (Exception e)
                 {
-                    // Logging;
+                    Console.WriteLine(e.Message);
                     return -2;
                 }
                 finally
@@ -103,7 +111,8 @@ namespace NetLibrary.SimpleSqlClient
                 }
             }
         }
-        static public int ExecSP(string sp_name, QueryRecord record, params QueryParam[] exec_params)
+
+        public int ExecSP(string sp_name, QueryRecord record, params QueryParam[] exec_params)
         {
             if (connection_string == "")
                 return -1;
@@ -185,11 +194,12 @@ namespace NetLibrary.SimpleSqlClient
         }
 
         // 제작중
-        static public int ExecDQuery(string sql, params QueryParam[] exec_params)
+        public int ExecDQuery(string sql, params QueryParam[] exec_params)
         {
             return 0;
         }
-        static public int ExecDQuery(string sql, QueryRecord record, params QueryParam[] exec_params)
+
+        public int ExecDQuery(string sql, QueryRecord record, params QueryParam[] exec_params)
         {
             return 0;
         }

@@ -1,0 +1,10 @@
+D:\Projects\TestServer\TestServer\DBLibraryTest\obj\Debug\TestDBLibrary.csprojAssemblyReference.cache
+D:\Projects\TestServer\TestServer\DBLibraryTest\obj\Debug\TestDBLibrary.csproj.CoreCompileInputs.cache
+D:\Projects\TestServer\TestServer\DBLibraryTest\bin\Debug\DBLibraryTest.exe.config
+D:\Projects\TestServer\TestServer\DBLibraryTest\bin\Debug\DBLibraryTest.exe
+D:\Projects\TestServer\TestServer\DBLibraryTest\bin\Debug\DBLibraryTest.pdb
+D:\Projects\TestServer\TestServer\DBLibraryTest\bin\Debug\NetLibrary.dll
+D:\Projects\TestServer\TestServer\DBLibraryTest\bin\Debug\NetLibrary.pdb
+D:\Projects\TestServer\TestServer\DBLibraryTest\obj\Debug\TestDBLibrary.csproj.CopyComplete
+D:\Projects\TestServer\TestServer\DBLibraryTest\obj\Debug\DBLibraryTest.exe
+D:\Projects\TestServer\TestServer\DBLibraryTest\obj\Debug\DBLibraryTest.pdb
