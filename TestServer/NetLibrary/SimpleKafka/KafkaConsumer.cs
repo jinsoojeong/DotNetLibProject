@@ -30,6 +30,19 @@ namespace NetLibrary.SimpleKafka
             worker = new Task(new Action<object>(Dowork), this);
         }
 
+        internal void Start()
+        {
+            shutdown = false;
+            worker.Start();
+        }
+
+        internal void Stop()
+        {
+            shutdown = true;
+            cancel_token.Cancel();
+            worker.Wait();
+        }
+
         private void Dowork(object obj)
         {
             KafkaConsumer kafka_consumer = (KafkaConsumer)obj;

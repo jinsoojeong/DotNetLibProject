@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimpleAsyncManager\SimpleAsyncManager.cs" />
     <Compile Include="SimpleHttpNet\SimpleHttpNet.cs" />
     <Compile Include="SimpleKafka\KafkaConsumer.cs" />
     <Compile Include="SimpleKafka\KafkaProducer.cs" />

@@ -43,6 +43,7 @@ namespace TestMatchingLibrary
 
         static void Main(string[] args)
         {
+            // 매칭 완료시 호출될 콜백 함수 생성
             CSimpleMatching.complete_callback += complete_callback;
 
             MatchMaking match_making1 = new TestMatchMaking();

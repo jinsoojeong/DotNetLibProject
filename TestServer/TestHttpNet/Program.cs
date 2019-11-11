@@ -14,26 +14,28 @@ namespace TestHttpNet
         {
             SimpleHttpNet net = new SimpleHttpNet();
 
-            HttpQuery http_query_get = new HttpQuery("https://partner.steam-api.com/ISteamMicroTxn/GetUserInfo/v2");
+            // Get 방식 http call
+            HttpQuery http_query_get = new HttpQuery("url");
             http_query_get.time_out = 10000;
             http_query_get.AddParam("format", "json");
-            http_query_get.AddParam("key", "02FF47D90BB148544A207A3A7A81F546");
-            http_query_get.AddParam("appid", "550650");
-            http_query_get.AddParam("steamid", "76561198026095706");
+            http_query_get.AddParam("param1", "");
+            http_query_get.AddParam("param2", "");
    
             string response = string.Empty;
             net.Request(HttpNetRequestType.GET, http_query_get, out response);
             Console.WriteLine(response);
 
-            HttpQuery http_query_post = new HttpQuery("https://httpbin.org/post");
+            // Post 방식 Http call
+            HttpQuery http_query_post = new HttpQuery("url");
             http_query_post.time_out = 10000;
-            http_query_post.AddParam("id", "101");
-            http_query_post.AddParam("name", "Alex");
+            http_query_post.AddParam("param1", "");
+            http_query_post.AddParam("param2", "");
 
             net.Request(HttpNetRequestType.POST, http_query_post, out response);
             Console.WriteLine(response);
 
-            net.FileDownload("http://httpbin.org/image/png", "image.png");
+            // 이미지 다운 예제
+            net.FileDownload("url", "image.png");
 
             return;
         }

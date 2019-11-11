@@ -51,6 +51,7 @@ namespace NetLibrary.SimpleKafka
             };
 
             KafkaConsumer consumer = new KafkaConsumer(topic, config);
+            consumer.Start();
             consumers.Add(topic, consumer);
         }
 
@@ -70,6 +71,19 @@ namespace NetLibrary.SimpleKafka
                 return false;
 
             return true;
+        }
+
+        public void StopProducer()
+        {
+            producer.Stop();
+        }
+
+        public void StopConsumer()
+        {
+            foreach (var consumer in consumers)
+            {
+                consumer.Value.Stop();
+            }
         }
     }
 }

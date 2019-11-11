@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Confluent.Kafka;
+using System.Threading;
 
 namespace NetLibrary.SimpleKafka
 {
@@ -14,9 +15,11 @@ namespace NetLibrary.SimpleKafka
         private Task worker;
         private bool shutdown = false;
         private BlockingCollection<Msg> msg_queue;
+        private CancellationTokenSource cancel_token;
 
         internal KafkaProducer(ProducerConfig config)
         {
+            cancel_token = new CancellationTokenSource();
             producer = new ProducerBuilder<Null, string>(config).Build();
             msg_queue = new BlockingCollection<Msg>();
             shutdown = false;
@@ -33,7 +36,7 @@ namespace NetLibrary.SimpleKafka
         internal void Stop()
         {
             shutdown = true;
-            Msg end_msg = MsgFactory.Create("end", "");
+            cancel_token.Cancel();
             worker.Wait();
         }
 
@@ -44,7 +47,7 @@ namespace NetLibrary.SimpleKafka
             Msg msg;
             while (!shutdown)
             {
-                if (msg_queue.TryTake(out msg, -1) == false)
+                if (msg_queue.TryTake(out msg, -1, cancel_token.Token) == false)
                 {
                     if (msg.Topic == "end")
                         break;
